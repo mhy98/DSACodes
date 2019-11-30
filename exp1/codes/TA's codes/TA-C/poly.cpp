@@ -52,7 +52,7 @@ public:
 	}
 	void addnode(Elemtype elem)
 	{
-		Node<Elemtype> *tail = head;
+		auto tail = head;
 		while (tail->next)
 			tail = tail->next;
 		tail->next = new Node<Elemtype>(elem);
@@ -147,7 +147,7 @@ void Poly::normalize()
 double Poly::evaluate(double x) const
 {
 	double result = 0;
-	for (Node<Term> *ptr = head; ptr; ptr = ptr->next)
+	for (auto *ptr = head; ptr; ptr = ptr->next)
 		if (ptr->data.expn)
 			result += ptr->data.coef * pow(x, ptr->data.expn);
 		else
@@ -163,7 +163,7 @@ double Poly::intergrade(double x1, double x2) const
 Poly Poly::operator++(void) const
 {
 	Poly result = *this;
-	for (Node<Term> *ptr = result.head; ptr; ptr = ptr->next)
+	for (auto ptr = result.head; ptr; ptr = ptr->next)
 		ptr->data.coef /= ++(ptr->data.expn);
 	return result;
 }
@@ -253,22 +253,19 @@ Poly Poly::operator*(const Poly &b) const
 	return result;
 }
 
-Poly Poly::division(const Poly &b, bool getremains) const
+Poly Poly::division(const Poly &b, bool getRemains) const
 {
-	Poly result, remains = *this;
-	Node<Term> *headA = remains.head->next, *headB = b.head->next;
-
 	// How we do the polynominal division by hand?
-	for (; headA && headB && headA->data.expn >= headB->data.expn; headA = remains.head->next, headB = b.head->next)
+	Poly result, remains = *this;
+	auto headA = remains.head->next, headB = b.head->next; 
+	while (headA && headB && headA->data.expn >= headB->data.expn)
 	{
-		// Delete data From iterA, iterB
-		Node<Term> *iterA = headA, *iterB = headB;
-		Term term_result(headA->data.coef / headB->data.coef, headA->data.expn - headB->data.expn);
-
 		// Add the term to the result
+		Term term_result(headA->data.coef / headB->data.coef, headA->data.expn - headB->data.expn);
 		result.addnode(term_result);
 
-		for (iterA = headA, iterB = headB; iterB; iterB = iterB->next)
+		// Delete data From iterA, iterB
+		for (auto iterA = headA, iterB = headB; iterB; iterB = iterB->next)
 		{
 			// Skip the greater terms
 			while (iterA && iterA->data.expn > (iterA->data.expn + term_result.expn))
@@ -291,9 +288,11 @@ Poly Poly::division(const Poly &b, bool getremains) const
 				iterA = insert->next;
 			}
 		}
+		headA = remains.head->next;
+		headB = b.head->next;
 		remains.trim();
 	}
-	if (getremains)
+	if (getRemains)
 		return remains;
 	return result;
 }
@@ -322,7 +321,7 @@ Poly Poly::GCD(const Poly &b) const
 
 Poly Poly::LCM(const Poly &b) const
 {
-	auto result = (*this) * (b / GCD(b));
+	Poly result = (*this) * (b / GCD(b));
 	result.normalize();
 	return result;
 }
