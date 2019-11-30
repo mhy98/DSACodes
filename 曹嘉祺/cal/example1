@@ -1,1 +1,0 @@
- (def ssPoly (arg POLY p FLOAT a FLOAT b) (multi (let ps (sPoly p)) (let aa (calPoly ps a)) (let bb (calPoly ps b)) (print (sub bb aa)) (br) (delElem ps) (delElem aa) (delElem bb)))
