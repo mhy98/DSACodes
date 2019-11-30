@@ -26,27 +26,27 @@ public:
 	~polynomial();
 	void operator=(const polynomial&);
 	polynomial(const polynomial&);
-	void copy(const polynomial&);						//¿½±´
-	void append(double, int);					//½«£¨ÏµÊı£¬´ÎÊı£©½Úµã²åÈë¶àÏîÊ½Á´±í
-	void print();								//´òÓ¡Êä³ö
-	void add(polynomial&, polynomial&);			//¶şÄ¿¼Ó·¨
-	void add(polynomial&);						//Ò»Ä¿¼Ó·¨
-	void sub(polynomial&, polynomial&);			//¶şÄ¿¼õ·¨
-	void sub(polynomial&);						//Ò»Ä¿¼õ·¨
-	void mult(polynomial&, polynomial&);		//¶şÄ¿³Ë·¨
-	void mult(polynomial&);						//Ò»Ä¿³Ë·¨
-	double calculate(double);					//½«X´úÈëÇóÖµ
-	void destroy();								//Ö÷¶¯µÄÎö¹¹²Ù×÷
-	void clear();								//Çå¿Õ
-	void differential(polynomial&);				//Î¢·Ö
-	void integral(polynomial&);					//²»¶¨»ı·Ö
-	double definite_integral(double,double);	//¶¨»ı·Ö				
-	void divide(polynomial&, polynomial&);		//¶şÄ¿³ı·¨
-	void divide(polynomial&);					//Ò»Ä¿³ı·¨
-	void mod(polynomial&, polynomial&);			//¶şÄ¿È¡Ä£
-	void mod(polynomial&);						//Ò»Ä¿È¡Ä£
-	void GCD(polynomial&, polynomial&);			//×î´ó¹«Ô¼Ê½
-	void LCM(polynomial&, polynomial&);			//×îĞ¡¹«±¶Ê½
-	void exponentiation(polynomial&, int);		//¶àÏîÊ½ÇóÃİ£¬ÀûÓÃ¿ìËÙÃİËã·¨
+	void copy(const polynomial&);						//æ‹·è´
+	void append(double, int);					//å°†ï¼ˆç³»æ•°ï¼Œæ¬¡æ•°ï¼‰èŠ‚ç‚¹æ’å…¥å¤šé¡¹å¼é“¾è¡¨
+	void print();								//æ‰“å°è¾“å‡º
+	void add(polynomial&, polynomial&);			//äºŒç›®åŠ æ³•
+	void add(polynomial&);						//ä¸€ç›®åŠ æ³•
+	void sub(polynomial&, polynomial&);			//äºŒç›®å‡æ³•
+	void sub(polynomial&);						//ä¸€ç›®å‡æ³•
+	void mult(polynomial&, polynomial&);		//äºŒç›®ä¹˜æ³•
+	void mult(polynomial&);						//ä¸€ç›®ä¹˜æ³•
+	double calculate(double);					//å°†Xä»£å…¥æ±‚å€¼
+	void destroy();								//ä¸»åŠ¨çš„ææ„æ“ä½œ
+	void clear();								//æ¸…ç©º
+	void differential(polynomial&);				//å¾®åˆ†
+	void integral(polynomial&);					//ä¸å®šç§¯åˆ†
+	double definite_integral(double,double);	//å®šç§¯åˆ†				
+	void divide(polynomial&, polynomial&);		//äºŒç›®é™¤æ³•
+	void divide(polynomial&);					//ä¸€ç›®é™¤æ³•
+	void mod(polynomial&, polynomial&);			//äºŒç›®å–æ¨¡
+	void mod(polynomial&);						//ä¸€ç›®å–æ¨¡
+	void GCD(polynomial&, polynomial&);			//æœ€å¤§å…¬çº¦å¼
+	void LCM(polynomial&, polynomial&);			//æœ€å°å…¬å€å¼
+	void exponentiation(polynomial&, int);		//å¤šé¡¹å¼æ±‚å¹‚ï¼Œåˆ©ç”¨å¿«é€Ÿå¹‚ç®—æ³•
 };
 

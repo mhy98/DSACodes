@@ -19,7 +19,7 @@ polynomial::~polynomial()
 	if (header!=nullptr)
 		destroy();
 }
-void polynomial::clear() {		//Ö»±£ÁôÍ·½Úµã
+void polynomial::clear() {		//åªä¿ç•™å¤´èŠ‚ç‚¹
 	if (header == nullptr) return;
 	Node *tmp,*tmp1= header->next;
 	while (tmp1 != nullptr) {
@@ -36,9 +36,9 @@ void polynomial::destroy() {
 	header = nullptr;
 }
 void polynomial::copy(const polynomial &dst) {			
-	if (this->header == dst.header || dst.header==nullptr) return;	//¸´ÖÆ×ÔÉí
+	if (this->header == dst.header || dst.header==nullptr) return;	//å¤åˆ¶è‡ªèº«
 	Node *end,*newnode,*tmp= dst.header->next;
-	if (header != nullptr) this->clear();						//ÊÍ·ÅÔ­ÏÈÄÚ´æ
+	if (header != nullptr) this->clear();						//é‡Šæ”¾åŸå…ˆå†…å­˜
 	header->next = nullptr;
 	end = header;
 	length = 0;
@@ -51,27 +51,27 @@ void polynomial::copy(const polynomial &dst) {
 	}
 	end->next = nullptr;
 }
-void polynomial::append(double a, int k) {			//ÒªÇóÎ¬»¤´Ó´óµ½Ğ¡µÄÖ¸ÊıË³Ğò,É¾³ıĞ¡ÓÚÎó²îÖµµÄ½Úµã¡£ÎªÁË²Ù×÷µÄ·½±ã£¬´ËÀà²»Î¬»¤ÎªÁãµÄ³£Êı½áµã£¬ÔÚĞèÒªÌØÊâ´¦ÀíµÄÊ±ºò»áÌØÊâ¿¼ÂÇ
-	if (abs(a) < 1e-8) return;						//ÊäÈë¼«Ğ¡£¬Ö±½Ó·µ»Ø
+void polynomial::append(double a, int k) {			//è¦æ±‚ç»´æŠ¤ä»å¤§åˆ°å°çš„æŒ‡æ•°é¡ºåº,åˆ é™¤å°äºè¯¯å·®å€¼çš„èŠ‚ç‚¹ã€‚ä¸ºäº†æ“ä½œçš„æ–¹ä¾¿ï¼Œæ­¤ç±»ä¸ç»´æŠ¤ä¸ºé›¶çš„å¸¸æ•°ç»“ç‚¹ï¼Œåœ¨éœ€è¦ç‰¹æ®Šå¤„ç†çš„æ—¶å€™ä¼šç‰¹æ®Šè€ƒè™‘
+	if (abs(a) < 1e-8) return;						//è¾“å…¥æå°ï¼Œç›´æ¥è¿”å›
 	Node *tmp1 = header->next,*tmp2=header, *newnode;
 	newnode = new Node(a, k);
 	while (tmp1 != nullptr && tmp1->K > newnode->K) {
 		tmp1 = tmp1->next;
 		tmp2 = tmp2->next;
 	}
-	if (tmp1 == nullptr) {		//±ÈËùÓĞµÄ¶¼Ğ¡
+	if (tmp1 == nullptr) {		//æ¯”æ‰€æœ‰çš„éƒ½å°
 		tmp2->next = newnode;
 		length++;
 	}
-	else if (tmp1->K == newnode->K) {			//ÓĞÏàÍ¬½Úµã
+	else if (tmp1->K == newnode->K) {			//æœ‰ç›¸åŒèŠ‚ç‚¹
 		tmp1->A += newnode->A;
-		if (abs(tmp1->A) <= 1e-8) {			//É¾³ı½Úµã
+		if (abs(tmp1->A) <= 1e-8) {			//åˆ é™¤èŠ‚ç‚¹
 			tmp2->next = tmp1->next;
 			delete tmp1;
 			length--;
 		}
 	}
-	else {						//ÎŞÏàÍ¬½Úµã
+	else {						//æ— ç›¸åŒèŠ‚ç‚¹
 		tmp2->next = newnode;
 		newnode->next = tmp1;
 		length++;
@@ -82,14 +82,14 @@ void polynomial::print() {
 	if (header == nullptr) {
 		printf("NULL\n"); return;
 	}
-	if (length == 0||header->next==nullptr) {					//Ö»ÓĞÒ»¸ö³£ÊıÏî0
+	if (length == 0||header->next==nullptr) {					//åªæœ‰ä¸€ä¸ªå¸¸æ•°é¡¹0
 		printf( "0.0000\n");
 		return;
 	}
 	Node* tmp = header->next;
 	bool first = true;
 	while (tmp != nullptr) {
-		if (tmp->A > 0)					//´¦ÀíÏµÊı£¬ÏµÊı´óÓÚÁã
+		if (tmp->A > 0)					//å¤„ç†ç³»æ•°ï¼Œç³»æ•°å¤§äºé›¶
 			if (first){
 				printf("%.4f", tmp->A);
 				first = false;
@@ -97,11 +97,11 @@ void polynomial::print() {
 			else {
 				printf( "+%.4f", tmp->A);
 			}
-		else{							//ÏµÊıĞ¡ÓÚÁã
+		else{							//ç³»æ•°å°äºé›¶
 			printf("%.4f", tmp->A);
 			first = false;
 		}
-		if (tmp->K == 1) {				//´¦ÀíÖ¸Êı£¬Ö¸ÊıµÈÓÚ1
+		if (tmp->K == 1) {				//å¤„ç†æŒ‡æ•°ï¼ŒæŒ‡æ•°ç­‰äº1
 			printf( "x");
 		}
 		else if(tmp->K!=0){
@@ -112,23 +112,23 @@ void polynomial::print() {
 	printf("\n");
 }
 void polynomial::add(polynomial& m1, polynomial& m2) {
-	if (m1.header == nullptr || m2.header == nullptr) {				//Á½¸ö¼ÓÏîÖÁÉÙÓĞÒ»¸ö²»´æÔÚµÄ´íÎó
+	if (m1.header == nullptr || m2.header == nullptr) {				//ä¸¤ä¸ªåŠ é¡¹è‡³å°‘æœ‰ä¸€ä¸ªä¸å­˜åœ¨çš„é”™è¯¯
 		return;
 	}
-	if (m1.header == this->header) {		//Èç¹ûÄ³¸ö¼ÓÏîÓëthisÒ»Ñù£¬Ôò×ª±äÎªµ¥Ä¿ÔËËãĞÎÊ½µÄadd
+	if (m1.header == this->header) {		//å¦‚æœæŸä¸ªåŠ é¡¹ä¸thisä¸€æ ·ï¼Œåˆ™è½¬å˜ä¸ºå•ç›®è¿ç®—å½¢å¼çš„add
 		this->add(m2);
 		return;
 	}
-	if (m2.header == this->header) {		//Í¬ÉÏ
+	if (m2.header == this->header) {		//åŒä¸Š
 		this->add(m1);
 		return;
 	}
-	this->clear();							//Çå¿ÕÄÚ´æ
+	this->clear();							//æ¸…ç©ºå†…å­˜
 	this->add(m1);
 	this->add(m2);
 }
 void polynomial::add(polynomial& m1) {
-	if (m1.header == this->header) {		//×Ô¼º¼Ó×Ô¼º£¬µÈÓÚ³Ë¶ş
+	if (m1.header == this->header) {		//è‡ªå·±åŠ è‡ªå·±ï¼Œç­‰äºä¹˜äºŒ
 		Node* tmp = header->next;
 		while (tmp != nullptr) {
 			tmp->A += tmp->A;
@@ -140,18 +140,18 @@ void polynomial::add(polynomial& m1) {
 	tmp.copy(m1);
 	Node* tmp1 = this->header;
 	Node* tmp2 = tmp.header->next;
-	while (tmp2 != nullptr) {				//°Ñm1µÄÏîÍù×Ô¼º±íÉÏ²å
+	while (tmp2 != nullptr) {				//æŠŠm1çš„é¡¹å¾€è‡ªå·±è¡¨ä¸Šæ’
 		while (tmp1->next!=nullptr && tmp1->next->K > tmp2->K)
 			tmp1 = tmp1->next;
-		if (tmp1->next == nullptr) {		//Ê£ÓàµÄÖ±½Ó²å±íÎ²
+		if (tmp1->next == nullptr) {		//å‰©ä½™çš„ç›´æ¥æ’è¡¨å°¾
 			tmp1->next = tmp2;
 			tmp.header->next = nullptr;
 			length += tmp.length;
 			return;
 		}
-		if (tmp1->next->K == tmp2->K) {			//ÏàÍ¬´ÎÊıµÄ½Úµã
+		if (tmp1->next->K == tmp2->K) {			//ç›¸åŒæ¬¡æ•°çš„èŠ‚ç‚¹
 			tmp1->next->A += tmp2->A;
-			if (abs(tmp1->next->A) < 1e-8) {		//Èç¹û¼ÓºóµÄ½ÚµãÎªÁã£¬ÔòÉ¾Ö®
+			if (abs(tmp1->next->A) < 1e-8) {		//å¦‚æœåŠ åçš„èŠ‚ç‚¹ä¸ºé›¶ï¼Œåˆ™åˆ ä¹‹
 				Node* tmp = tmp1->next;
 				tmp1->next = tmp->next;
 				delete tmp;
@@ -160,7 +160,7 @@ void polynomial::add(polynomial& m1) {
 			tmp.header->next = tmp2->next;
 			delete tmp2;
 		}
-		else {									//²»ÏàÍ¬´ÎÊıµÄ½Úµã
+		else {									//ä¸ç›¸åŒæ¬¡æ•°çš„èŠ‚ç‚¹
 			tmp.header->next = tmp2->next;
 			tmp2->next = tmp1->next;
 			tmp1->next = tmp2;
@@ -170,14 +170,14 @@ void polynomial::add(polynomial& m1) {
 	}
 }
 void polynomial::sub(polynomial& m1, polynomial& m2){
-	if (m1.header == nullptr || m2.header == nullptr) {				//Á½¸ö¼õÏîÖÁÉÙÓĞÒ»¸ö²»´æÔÚµÄ´íÎó
+	if (m1.header == nullptr || m2.header == nullptr) {				//ä¸¤ä¸ªå‡é¡¹è‡³å°‘æœ‰ä¸€ä¸ªä¸å­˜åœ¨çš„é”™è¯¯
 		return;
 	}
-	if (m1.header == this->header) {		//Èç¹ûÄ³¸ö¼õÏîÓëthisÒ»Ñù£¬Ôò×ª±äÎªµ¥Ä¿ÔËËãĞÎÊ½µÄsub
+	if (m1.header == this->header) {		//å¦‚æœæŸä¸ªå‡é¡¹ä¸thisä¸€æ ·ï¼Œåˆ™è½¬å˜ä¸ºå•ç›®è¿ç®—å½¢å¼çš„sub
 		this->sub(m2);
 		return;
 	}
-	if (m2.header == this->header) {		//Í¬ÉÏ
+	if (m2.header == this->header) {		//åŒä¸Š
 		this->sub(m1);
 		Node *tmp = header->next;
 		while (tmp != nullptr) {
@@ -186,18 +186,18 @@ void polynomial::sub(polynomial& m1, polynomial& m2){
 		}
 		return;
 	}
-	this->clear();							//Çå¿ÕÄÚ´æ
+	this->clear();							//æ¸…ç©ºå†…å­˜
 	this->add(m1);
 	this->sub(m2);
 }
 void polynomial::sub(polynomial& m1) {
-	if (m1.header == this->header) {		//×Ô¼º¼õ×Ô¼º
+	if (m1.header == this->header) {		//è‡ªå·±å‡è‡ªå·±
 		m1.clear();
 		return;
 	}
 	polynomial tmp = polynomial();
 	tmp.copy(m1);
-	Node* nod =tmp.header->next;				//³ËÒÔ-1×ªÎª¼Ó·¨
+	Node* nod =tmp.header->next;				//ä¹˜ä»¥-1è½¬ä¸ºåŠ æ³•
 	while (nod != nullptr) {
 		nod->A = -nod->A;
 		nod = nod->next;
@@ -205,24 +205,24 @@ void polynomial::sub(polynomial& m1) {
 	this->add(tmp);
 }
 void polynomial::mult(polynomial& m1, polynomial& m2) {
-	if (m1.header == nullptr || m2.header == nullptr) {				//Á½¸ö³ËÏîÖÁÉÙÓĞÒ»¸ö²»´æÔÚµÄ´íÎó
+	if (m1.header == nullptr || m2.header == nullptr) {				//ä¸¤ä¸ªä¹˜é¡¹è‡³å°‘æœ‰ä¸€ä¸ªä¸å­˜åœ¨çš„é”™è¯¯
 		std::cout << "error:the polynomial hasn't been initialized" << std::endl;
 		return;
 	}
-	if (m1.header == this->header) {		//Èç¹ûÄ³¸ö³ËÏîÓëthisÒ»Ñù£¬Ôò×ª±äÎªµ¥Ä¿ÔËËãĞÎÊ½µÄmult
+	if (m1.header == this->header) {		//å¦‚æœæŸä¸ªä¹˜é¡¹ä¸thisä¸€æ ·ï¼Œåˆ™è½¬å˜ä¸ºå•ç›®è¿ç®—å½¢å¼çš„mult
 		this->mult(m2);
 		return;
 	}
-	if (m2.header == this->header) {		//Í¬ÉÏ
+	if (m2.header == this->header) {		//åŒä¸Š
 		this->mult(m1);
 		return;
 	}
-	this->clear();							//Çå¿ÕÄÚ´æ
+	this->clear();							//æ¸…ç©ºå†…å­˜
 	this->copy(m1);
 	this->mult(m2);
 }
 void polynomial::mult(polynomial& m1) {
-	if (m1.header == this->header) {		//×Ô¼º³Ë×Ô¼º
+	if (m1.header == this->header) {		//è‡ªå·±ä¹˜è‡ªå·±
 		polynomial tmp = polynomial();
 		tmp.copy(m1);
 		this->mult(tmp);
@@ -281,70 +281,70 @@ double polynomial::definite_integral(double x1, double x2) {
 }
 
 void polynomial::divide(polynomial& m1, polynomial& m2) {
-	if (m1.header == nullptr || m2.header == nullptr) {				//Á½¸öÏîÖÁÉÙÓĞÒ»¸ö²»´æÔÚµÄ´íÎó
+	if (m1.header == nullptr || m2.header == nullptr) {				//ä¸¤ä¸ªé¡¹è‡³å°‘æœ‰ä¸€ä¸ªä¸å­˜åœ¨çš„é”™è¯¯
 		std::cout << "error:the polynomial hasn't been initialized" << std::endl;
 		return;
 	}
-	if (m1.header == this->header) {		//Èç¹ûÄ³¸öÏîÓëthisÒ»Ñù£¬Ôò×ª±äÎªµ¥Ä¿ÔËËãĞÎÊ½µÄdivide
+	if (m1.header == this->header) {		//å¦‚æœæŸä¸ªé¡¹ä¸thisä¸€æ ·ï¼Œåˆ™è½¬å˜ä¸ºå•ç›®è¿ç®—å½¢å¼çš„divide
 		this->divide(m2);
 		return;
 	}
-	if (m2.header == this->header) {		//Í¬ÉÏ
+	if (m2.header == this->header) {		//åŒä¸Š
 		this->divide(m1);
 		return;
 	}
-	this->clear();							//Çå¿ÕÄÚ´æ
+	this->clear();							//æ¸…ç©ºå†…å­˜
 	this->copy(m1);
 	this->divide(m2);
 }
 
 void polynomial::divide(polynomial& m) {	
 	if (m.header->next == nullptr) {
-		std::cout << "error:divide zero!" << std::endl;  //³ıÊıÎªÁã
+		std::cout << "error:divide zero!" << std::endl;  //é™¤æ•°ä¸ºé›¶
 		return;
 	}
-	if (m.header == this->header) {		//×Ô¼º³ı×Ô¼º
+	if (m.header == this->header) {		//è‡ªå·±é™¤è‡ªå·±
 		this->clear();
 		this->append(1, 0);
 		return;
 	}
-	polynomial quotient = polynomial();		//quotient±£´æÉÌÊı
-	polynomial tmp_poly = polynomial();		//ÓÃÓÚÖĞ¼ä¼ÆËã¹ı³Ì
+	polynomial quotient = polynomial();		//quotientä¿å­˜å•†æ•°
+	polynomial tmp_poly = polynomial();		//ç”¨äºä¸­é—´è®¡ç®—è¿‡ç¨‹
 	Node* tmp = header->next;
 	double a1 = tmp->A;
 	double a2 = m.header->next->A;
-	while (tmp != nullptr && tmp->K >= m.header->next->K) {		//Èô±»³ıÏîµÄÏµÊı²»Ğ¡ÓÚ³ıÏî£¬Ôò¿ÉÒÔ¼ÌĞø³ı
+	while (tmp != nullptr && tmp->K >= m.header->next->K) {		//è‹¥è¢«é™¤é¡¹çš„ç³»æ•°ä¸å°äºé™¤é¡¹ï¼Œåˆ™å¯ä»¥ç»§ç»­é™¤
 		double A = a1 / a2;
-		int K = tmp->K - m.header->next->K;						//µÃµ½ÏµÊıÎªA£¬Ö¸ÊıÎªKµÄÏî
+		int K = tmp->K - m.header->next->K;						//å¾—åˆ°ç³»æ•°ä¸ºAï¼ŒæŒ‡æ•°ä¸ºKçš„é¡¹
 		quotient.append(A,K);
 		Node* tp = m.header->next;									
-		while (tp != nullptr) {									//½«µÃµ½µÄÏîÓë³ıÏîÏà³Ë£¬µÃµ½ÖĞ¼ä½á¹û
+		while (tp != nullptr) {									//å°†å¾—åˆ°çš„é¡¹ä¸é™¤é¡¹ç›¸ä¹˜ï¼Œå¾—åˆ°ä¸­é—´ç»“æœ
 			tmp_poly.append(A*tp->A,K+tp->K);
 			tp = tp->next;
 		}
-		this->sub(tmp_poly);									//¼õÈ¥ÖĞ¼ä½á¹û
-		tmp = header->next;										//¸üĞÂ
-		if (tmp!=nullptr) a1 = tmp->A;							//¸üĞÂ
-		tmp_poly.clear();										//¸üĞÂ
+		this->sub(tmp_poly);									//å‡å»ä¸­é—´ç»“æœ
+		tmp = header->next;										//æ›´æ–°
+		if (tmp!=nullptr) a1 = tmp->A;							//æ›´æ–°
+		tmp_poly.clear();										//æ›´æ–°
 	}
 	this->copy(quotient);
 }
 
 
 void polynomial::mod(polynomial& m1, polynomial& m2) {
-	if (m1.header == nullptr || m2.header == nullptr) {				//Á½¸öÏîÖÁÉÙÓĞÒ»¸ö²»´æÔÚµÄ´íÎó
+	if (m1.header == nullptr || m2.header == nullptr) {				//ä¸¤ä¸ªé¡¹è‡³å°‘æœ‰ä¸€ä¸ªä¸å­˜åœ¨çš„é”™è¯¯
 		std::cout << "error:the polynomial hasn't been initialized" << std::endl;
 		return;
 	}
-	if (m1.header == this->header) {		//Èç¹ûÄ³¸öÏîÓëthisÒ»Ñù£¬Ôò×ª±äÎªµ¥Ä¿ÔËËãĞÎÊ½µÄmod
+	if (m1.header == this->header) {		//å¦‚æœæŸä¸ªé¡¹ä¸thisä¸€æ ·ï¼Œåˆ™è½¬å˜ä¸ºå•ç›®è¿ç®—å½¢å¼çš„mod
 		this->mod(m2);
 		return;
 	}
-	if (m2.header == this->header) {		//Í¬ÉÏ
+	if (m2.header == this->header) {		//åŒä¸Š
 		this->mod(m1);
 		return;
 	}
-	this->clear();							//Çå¿ÕÄÚ´æ
+	this->clear();							//æ¸…ç©ºå†…å­˜
 	this->copy(m1);
 	this->mod(m2);
 }
@@ -352,35 +352,35 @@ void polynomial::mod(polynomial& m1, polynomial& m2) {
 
 void polynomial::mod(polynomial& m) {
 	if (m.header->next == nullptr) {
-		std::cout << "divide zero!" << std::endl;  //³ıÊıÎªÁã
+		std::cout << "divide zero!" << std::endl;  //é™¤æ•°ä¸ºé›¶
 		return;
 	}
-	if (m.header == this->header) {		//×Ô¼ºÄ£×Ô¼º
+	if (m.header == this->header) {		//è‡ªå·±æ¨¡è‡ªå·±
 		this->clear();
 		return;
 	}
-	polynomial tmp_poly = polynomial();		//ÓÃÓÚÖĞ¼ä¼ÆËã¹ı³Ì
+	polynomial tmp_poly = polynomial();		//ç”¨äºä¸­é—´è®¡ç®—è¿‡ç¨‹
 	Node* tmp = header->next;
 	double a1 = tmp->A;
 	double a2 = m.header->next->A;
-	while (tmp != nullptr && tmp->K >= m.header->next->K) {		//Èô±»³ıÏîµÄÏµÊı²»Ğ¡ÓÚ³ıÏî£¬Ôò¿ÉÒÔ¼ÌĞø³ı
+	while (tmp != nullptr && tmp->K >= m.header->next->K) {		//è‹¥è¢«é™¤é¡¹çš„ç³»æ•°ä¸å°äºé™¤é¡¹ï¼Œåˆ™å¯ä»¥ç»§ç»­é™¤
 		double A = a1 / a2;
-		int K = tmp->K - m.header->next->K;						//µÃµ½ÏµÊıÎªA£¬Ö¸ÊıÎªKµÄÏî
+		int K = tmp->K - m.header->next->K;						//å¾—åˆ°ç³»æ•°ä¸ºAï¼ŒæŒ‡æ•°ä¸ºKçš„é¡¹
 		Node* tp = m.header->next;
-		while (tp != nullptr) {									//½«µÃµ½µÄÏîÓë³ıÏîÏà³Ë£¬µÃµ½ÖĞ¼ä½á¹û
+		while (tp != nullptr) {									//å°†å¾—åˆ°çš„é¡¹ä¸é™¤é¡¹ç›¸ä¹˜ï¼Œå¾—åˆ°ä¸­é—´ç»“æœ
 			tmp_poly.append(A*tp->A, K + tp->K);
 			tp = tp->next;
 		}
-		this->sub(tmp_poly);									//¼õÈ¥ÖĞ¼ä½á¹û
-		tmp = header->next;										//¸üĞÂ
-		if (tmp != nullptr) a1 = tmp->A;						//¸üĞÂ
-		tmp_poly.clear();										//¸üĞÂ
+		this->sub(tmp_poly);									//å‡å»ä¸­é—´ç»“æœ
+		tmp = header->next;										//æ›´æ–°
+		if (tmp != nullptr) a1 = tmp->A;						//æ›´æ–°
+		tmp_poly.clear();										//æ›´æ–°
 	}
-	//ÁôÏÂµÄthis¾ÍÊÇÓàÏî
+	//ç•™ä¸‹çš„thiså°±æ˜¯ä½™é¡¹
 }
 
-void polynomial::GCD(polynomial& m1, polynomial& m2) {			//ÀûÓÃÕ·×ªÏà³ı·¨Çó×î´ó¹«Ô¼Ê½
-	if (m1.header == nullptr || m2.header == nullptr) {				//Á½¸öÏîÖÁÉÙÓĞÒ»¸ö²»´æÔÚµÄ´íÎó
+void polynomial::GCD(polynomial& m1, polynomial& m2) {			//åˆ©ç”¨è¾—è½¬ç›¸é™¤æ³•æ±‚æœ€å¤§å…¬çº¦å¼
+	if (m1.header == nullptr || m2.header == nullptr) {				//ä¸¤ä¸ªé¡¹è‡³å°‘æœ‰ä¸€ä¸ªä¸å­˜åœ¨çš„é”™è¯¯
 		std::cout << "error:the polynomial hasn't been initialized" << std::endl;
 		return;
 	}
@@ -390,12 +390,12 @@ void polynomial::GCD(polynomial& m1, polynomial& m2) {			//ÀûÓÃÕ·×ªÏà³ı·¨Çó×î´ó¹
 	p1.copy(m1);
 	p2.copy(m2);
 	p.mod(p1, p2);
-	while (p.length != 0) {						//Ö±µ½¶àÏîÊ½Îª³£ÊıÁã
+	while (p.length != 0) {						//ç›´åˆ°å¤šé¡¹å¼ä¸ºå¸¸æ•°é›¶
 		p1.copy(p2);
 		p2.copy(p);
 		p.mod(p1, p2);
 	}
-	double A;									//½ÓÏÂÀ´¶Ôp2½øĞĞ¹éÒ»»¯´¦Àí
+	double A;									//æ¥ä¸‹æ¥å¯¹p2è¿›è¡Œå½’ä¸€åŒ–å¤„ç†
 	Node* tmp = p2.header->next;
 	if (tmp != nullptr)
 		A = tmp->A;
@@ -407,7 +407,7 @@ void polynomial::GCD(polynomial& m1, polynomial& m2) {			//ÀûÓÃÕ·×ªÏà³ı·¨Çó×î´ó¹
 }
 
 void polynomial::LCM(polynomial& m1, polynomial& m2) {
-	if (m1.header == nullptr || m2.header == nullptr) {				//Á½¸öÏîÖÁÉÙÓĞÒ»¸ö²»´æÔÚµÄ´íÎó
+	if (m1.header == nullptr || m2.header == nullptr) {				//ä¸¤ä¸ªé¡¹è‡³å°‘æœ‰ä¸€ä¸ªä¸å­˜åœ¨çš„é”™è¯¯
 		std::cout << "error:the polynomial hasn't been initialized" << std::endl;
 		return;
 	}
@@ -418,8 +418,8 @@ void polynomial::LCM(polynomial& m1, polynomial& m2) {
 	p2.copy(m2);
 	p.GCD(m1, m2);
 	this->mult(p1, p2);
-	this->divide(p);							//×îĞ¡¹«±¶Ê½³Ë×î´ó¹«Ô¼Ê½µÈÓÚp1*p2
-	double A;									//½ÓÏÂÀ´¶Ôthis½øĞĞ¹éÒ»»¯´¦Àí
+	this->divide(p);							//æœ€å°å…¬å€å¼ä¹˜æœ€å¤§å…¬çº¦å¼ç­‰äºp1*p2
+	double A;									//æ¥ä¸‹æ¥å¯¹thisè¿›è¡Œå½’ä¸€åŒ–å¤„ç†
 	Node* tmp = this->header->next;
 	if (tmp != nullptr)
 		A = tmp->A;

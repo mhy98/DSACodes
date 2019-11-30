@@ -150,7 +150,7 @@ bool preop(char c, char ch) {
 	}
 	return (a1 >= b1);
 }
-void Poly_List::Calculate() {	//四则运算，输入运算式，以#号结束，输出结果
+void Poly_List::Calculate() {	//鍥涘垯杩愮畻锛岃緭鍏ヨ繍绠楀紡锛屼互#鍙风粨鏉燂紝杈撳嚭缁撴灉
 	stack_of_char sop = stack_of_char();
 	stack_of_polynomial sval = stack_of_polynomial();
 	sop.push('#');
