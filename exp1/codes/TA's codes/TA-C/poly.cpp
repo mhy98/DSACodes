@@ -10,7 +10,7 @@ struct Term
 	double coef;
 	Term() : expn(0), coef(0){};
 	Term(double _coef, int _expn) : expn(_expn), coef(_coef) {}
-	Term(const Term &B) : expn(B.expn), coef(B.coef) {}
+	Term(const Term &_b) : expn(_b.expn), coef(_b.coef) {}
 };
 
 template <typename Elemtype>
@@ -339,21 +339,22 @@ std::ostream &operator<<(std::ostream &stream, const Poly &poly)
 		stream << "0.0000" << std::endl;
 		return stream;
 	}
-	auto scanptr = poly.head->next;
-	for (bool first = false; scanptr; scanptr = scanptr->next)
+
+	bool isFirst = false;
+	for (auto scanPos = poly.head->next; scanPos; scanPos = scanPos->next)
 	{
-		if (first == false)
-			first = true;
-		else if (scanptr->data.coef > 0)
+		if (isFirst == false)
+			isFirst = true;
+		else if (scanPos->data.coef > 0)
 			stream << "+";
-		if (scanptr->data.coef < 0)
+		if (scanPos->data.coef < 0)
 			stream << "-";
-		stream << std::setprecision(4) << std::fixed << fabs(scanptr->data.coef);
-		if (scanptr->data.expn)
+		stream << std::setprecision(4) << std::fixed << fabs(scanPos->data.coef);
+		if (scanPos->data.expn)
 		{
 			stream << "x";
-			if (scanptr->data.expn != 1)
-				stream << "^" << scanptr->data.expn;
+			if (scanPos->data.expn != 1)
+				stream << "^" << scanPos->data.expn;
 		}
 	}
 	stream << std::endl;
