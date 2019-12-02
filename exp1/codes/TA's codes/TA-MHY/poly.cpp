@@ -208,28 +208,8 @@ Poly Poly::operator=(const Poly &b)
 
 Poly Poly::operator+(const Poly &b) const
 {
-	Poly result;
-	auto ptrA = head->next, ptrB = b.head->next;
-	while (ptrA && ptrB)
-		if (ptrA->data.expn > ptrB->data.expn)
-		{
-			result.addnode(ptrA->data);
-			ptrA = ptrA->next;
-		}
-		else if (ptrB->data.expn > ptrA->data.expn)
-		{
-			result.addnode(ptrB->data);
-			ptrB = ptrB->next;
-		}
-		else
-		{
-			result.addnode(Term(ptrA->data.coef + ptrB->data.coef, ptrA->data.expn));
-			ptrA = ptrA->next;
-			ptrB = ptrB->next;
-		}
-	for (; ptrA; ptrA = ptrA->next)
-		result.addnode(ptrA->data);
-	for (; ptrB; ptrB = ptrB->next)
+	Poly result = *this;
+	for(auto ptrB = b.head->next;ptrB; ptrB = ptrB->next)
 		result.addnode(ptrB->data);
 	result.trim();
 	return result;
@@ -288,9 +268,9 @@ Poly Poly::division(const Poly &b, bool getRemains) const
 				iterA = insert->next;
 			}
 		}
+		remains.trim();
 		headA = remains.head->next;
 		headB = b.head->next;
-		remains.trim();
 	}
 	if (getRemains)
 		return remains;
