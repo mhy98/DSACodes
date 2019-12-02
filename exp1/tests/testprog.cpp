@@ -37,25 +37,25 @@ const double value[testNum] = {
 	1, 1.5, 1.5, 0.5, 0.5		  //power
 };
 
-double PrintReport(ostream &output, int num, bool ok)
+double PrintReportLine(ostream &output, int testNo, bool isCorrect)
 {
 	int linelen = 30;
 	for (int pos = 0; pos < moduleNum; pos++)
-		if (num >= bound[pos] && num < bound[pos + 1])
+		if (testNo >= bound[pos] && testNo < bound[pos + 1])
 		{
-			output << name[pos] << num - bound[pos];
+			output << name[pos] << testNo - bound[pos];
 			linelen -= strlen(name[pos]);
 			break;
 		}
 
 	for (int i = 0; i < linelen; i++)
 		output << "-";
-	output << value[num] << "pts--";
+	output << value[testNo] << "pts--";
 
-	if (ok)
+	if (isCorrect)
 	{
 		output << "OK!" << endl;
-		return value[num];
+		return value[testNo];
 	}
 	else
 	{
@@ -64,12 +64,13 @@ double PrintReport(ostream &output, int num, bool ok)
 	}
 }
 
-string GetStuNo(string name)
+string GetStuNo(string stuName)
 {
 	int i;
-	for (i = 0; name[i] != 'P' && name[i] != 'p'; i++);
-	return string(name, i, 10);
+	for (i = 0; stuName[i] != 'P' && stuName[i] != 'p'; i++);
+	return string(stuName, i, 10);
 }
+
 int main()
 {
 	system("dir .\\targets\\*.exe /b > files.txt");
@@ -80,7 +81,7 @@ int main()
 	for (string path; getName >> path; system("del polyn.out"))
 	{
 		string stuNo = GetStuNo(path);
-		string exePath = "targets\\" + path + " >nul";
+		string progPath = "targets\\" + path + " >nul";
 		string reportPath = "reports\\" + stuNo + "_report.txt";
 
 		float score = 1;
@@ -93,32 +94,32 @@ int main()
 		for (int i = 0; i < testNum; i++)
 		{
 			//copy test file to polyn.in
-			string testpath;
-			getTests >> testpath;
-			string copy_command = "copy .\\tests\\" + testpath + " polyn.in";
-			system(copy_command.c_str());
+			string testPath;
+			getTests >> testPath;
+			string copyCommand = "copy .\\tests\\" + testPath + " polyn.in";
+			system(copyCommand.c_str());
 
 			//run the program
-			cout << "running " << path << "with test file: " << testpath << endl;
-			system(exePath.c_str());
+			cout << "running " << path << " with test file: " << testPath << endl;
+			system(progPath.c_str());
 
 			//read polyn.out
-			ifstream stu_ans("polyn.out");
+			ifstream stuAns("polyn.out");
 			char stuline[1000], stdline[1000];
 			memset(stuline, 0, sizeof(char));
-			if (stu_ans.peek() != EOF)
-				stu_ans.getline(stuline, 1000);
+			if (stuAns.peek() != EOF)
+				stuAns.getline(stuline, 1000);
 			stdAns.getline(stdline, 1000);
 
-			score += PrintReport(stuReport, i, !strcmp(stuline, stdline));
+			score += PrintReportLine(stuReport, i, !strcmp(stuline, stdline));
 
-			stu_ans.close();
+			stuAns.close();
 			system("del polyn.out");
 			system("del polyn.in");
 		}
 
 		stuReport << "total score: " << score << endl;
-		scoreForm << stuNo << " score:" << score << endl;
+		scoreForm << stuNo << " score: " << score << endl;
 
 		stdAns.close();
 		stuReport.close();
