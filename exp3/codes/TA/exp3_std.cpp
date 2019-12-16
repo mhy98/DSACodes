@@ -111,6 +111,8 @@ void BFS(node* root, int &maxWidth, int &maxWidthDepth, int &depth)
 			layer[thisLayer].pop();
 		}
 	}
+	layer[0].init();
+	layer[1].init();
 }
 
 int main()
