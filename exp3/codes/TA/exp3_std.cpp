@@ -45,9 +45,11 @@ public:
 	}
 };
 
-node* construct(char* inputStr, int &scanPos)
+node* construct(char* inputStr)
 {
 	// inputStr[scanPos] is '{'
+	static int scanPos = 0;
+	
 	scanPos++;	//skip the '{'
 	if (inputStr[scanPos] == '}')
 	{
@@ -57,7 +59,7 @@ node* construct(char* inputStr, int &scanPos)
 	auto subTree = new node;
 
 	// lchild
-	subTree->lchild = construct(inputStr, scanPos);
+	subTree->lchild = construct(inputStr);
 	scanPos++;	//skip the comma
 	
 	// number
@@ -67,7 +69,7 @@ node* construct(char* inputStr, int &scanPos)
 	scanPos++;	//skip the comma
 
 	//rchild
-	subTree->rchild = construct(inputStr, scanPos);
+	subTree->rchild = construct(inputStr);
 	return subTree;
 }
 
@@ -82,9 +84,9 @@ void preOrder(bool comma, node* root)
 	preOrder(true, root->rchild);
 }
 
-queue<node*> layer[2];
 void BFS(node* root, int &maxWidth, int &maxWidthDepth, int &depth)
 {
+	static queue<node*> layer[2];
 	layer[0].push(root);
 	for (depth =  maxWidth = 0; layer[depth % 2].size(); depth++)
 	{
@@ -116,8 +118,7 @@ int main()
 	auto inputStr = new char[300310];
 	scanf("%s", inputStr);
 	
-	int scanPos = 0;
-	node *biTree = construct(inputStr, scanPos);
+	node *biTree = construct(inputStr);
 	
 	preOrder(false, biTree);
 	printf("\n");
