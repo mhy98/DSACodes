@@ -1,3 +1,8 @@
+/*
+ * Author: MHY-Silence
+ * Date: 2019-12-1
+ * Content: Expected solution of experiment 1
+ */ 
 #include <cmath>
 #include <cstdlib>
 #include <iomanip>
@@ -10,7 +15,7 @@ struct Term
 	double coef;
 	Term() : expn(0), coef(0){};
 	Term(double _coef, int _expn) : expn(_expn), coef(_coef) {}
-	Term(const Term &B) : expn(B.expn), coef(B.coef) {}
+	Term(const Term &_b) : expn(_b.expn), coef(_b.coef) {}
 };
 
 template <typename Elemtype>
@@ -50,9 +55,9 @@ public:
 		delete head;
 		head = NULL;
 	}
-	void addnode(Elemtype elem)
+	void addNode(Elemtype elem)
 	{
-		Node<Elemtype> *tail = head;
+		auto tail = head;
 		while (tail->next)
 			tail = tail->next;
 		tail->next = new Node<Elemtype>(elem);
@@ -75,7 +80,7 @@ public:
 			return;
 		clear();
 		for (auto ptrB = b.head->next; ptrB; ptrB = ptrB->next)
-			addnode(ptrB->data);
+			addNode(ptrB->data);
 	}
 	void normalize();
 	double evaluate(double x) const;
@@ -133,6 +138,7 @@ void Poly::trim()
 			scanPos = scanPos->next;
 	}
 }
+
 void Poly::normalize()
 {
 	if (head && head->next)
@@ -142,27 +148,31 @@ void Poly::normalize()
 			ptr->data.coef /= x;
 	}
 }
+
 double Poly::evaluate(double x) const
 {
 	double result = 0;
-	for (Node<Term> *ptr = head; ptr; ptr = ptr->next)
+	for (auto *ptr = head; ptr; ptr = ptr->next)
 		if (ptr->data.expn)
 			result += ptr->data.coef * pow(x, ptr->data.expn);
 		else
 			result += ptr->data.coef;
 	return result;
 }
+
 double Poly::intergrade(double x1, double x2) const
 {
 	return (++(*this)).evaluate(x2) - (++(*this)).evaluate(x1);
 }
+
 Poly Poly::operator++(void) const
 {
 	Poly result = *this;
-	for (Node<Term> *ptr = result.head; ptr; ptr = ptr->next)
+	for (auto ptr = result.head; ptr; ptr = ptr->next)
 		ptr->data.coef /= ++(ptr->data.expn);
 	return result;
 }
+
 Poly Poly::operator--(void) const
 {
 	Poly result = *this;
@@ -175,10 +185,11 @@ Poly Poly::operator--(void) const
 	result.trim();
 	return result;
 }
+
 Poly Poly::operator^(int x) const
 {
 	Poly result, base = *(this);
-	result.addnode(Term(1, 0));
+	result.addNode(Term(1, 0));
 	while (x > 0)
 	{
 		if (x & 1)
@@ -188,6 +199,7 @@ Poly Poly::operator^(int x) const
 	}
 	return result;
 }
+
 Poly Poly::operator=(const Poly &b)
 {
 	if (this == &b)
@@ -195,37 +207,19 @@ Poly Poly::operator=(const Poly &b)
 
 	clear();
 	for (auto ptrB = b.head->next; ptrB; ptrB = ptrB->next)
-		addnode(ptrB->data);
+		addNode(ptrB->data);
 	return *this;
 }
+
 Poly Poly::operator+(const Poly &b) const
 {
-	Poly result;
-	auto ptrA = head->next, ptrB = b.head->next;
-	while (ptrA && ptrB)
-		if (ptrA->data.expn > ptrB->data.expn)
-		{
-			result.addnode(ptrA->data);
-			ptrA = ptrA->next;
-		}
-		else if (ptrB->data.expn > ptrA->data.expn)
-		{
-			result.addnode(ptrB->data);
-			ptrB = ptrB->next;
-		}
-		else
-		{
-			result.addnode(Term(ptrA->data.coef + ptrB->data.coef, ptrA->data.expn));
-			ptrA = ptrA->next;
-			ptrB = ptrB->next;
-		}
-	for (; ptrA; ptrA = ptrA->next)
-		result.addnode(ptrA->data);
-	for (; ptrB; ptrB = ptrB->next)
-		result.addnode(ptrB->data);
+	Poly result = *this;
+	for(auto ptrB = b.head->next;ptrB; ptrB = ptrB->next)
+		result.addNode(ptrB->data);
 	result.trim();
 	return result;
 }
+
 Poly Poly::operator-(const Poly &b) const
 {
 	Poly opposite = b;
@@ -233,31 +227,30 @@ Poly Poly::operator-(const Poly &b) const
 		ptr->data.coef = -ptr->data.coef;
 	return (*this) + opposite;
 }
+
 Poly Poly::operator*(const Poly &b) const
 {
 	Poly result;
 	for (auto ptrA = head->next; ptrA; ptrA = ptrA->next)
 		for (auto ptrB = b.head->next; ptrB; ptrB = ptrB->next)
-			result.addnode(Term(ptrA->data.coef * ptrB->data.coef, ptrA->data.expn + ptrB->data.expn));
+			result.addNode(Term(ptrA->data.coef * ptrB->data.coef, ptrA->data.expn + ptrB->data.expn));
 	result.trim();
 	return result;
 }
-Poly Poly::division(const Poly &b, bool getremains) const
+
+Poly Poly::division(const Poly &b, bool getRemains) const
 {
-	Poly result, remains = *this;
-	Node<Term> *headA = remains.head->next, *headB = b.head->next;
-
 	// How we do the polynominal division by hand?
-	for (; headA && headB && headA->data.expn >= headB->data.expn; headA = remains.head->next, headB = b.head->next)
+	Poly result, remains = *this;
+	auto headA = remains.head->next, headB = b.head->next; 
+	while (headA && headB && headA->data.expn >= headB->data.expn)
 	{
-		// Delete data From iterA, iterB
-		Node<Term> *iterA = headA, *iterB = headB;
-		Term term_result(headA->data.coef / headB->data.coef, headA->data.expn - headB->data.expn);
-
 		// Add the term to the result
-		result.addnode(term_result);
+		Term term_result(headA->data.coef / headB->data.coef, headA->data.expn - headB->data.expn);
+		result.addNode(term_result);
 
-		for (iterA = headA, iterB = headB; iterB; iterB = iterB->next)
+		// Delete data From iterA, iterB
+		for (auto iterA = headA, iterB = headB; iterB; iterB = iterB->next)
 		{
 			// Skip the greater terms
 			while (iterA && iterA->data.expn > (iterA->data.expn + term_result.expn))
@@ -281,19 +274,24 @@ Poly Poly::division(const Poly &b, bool getremains) const
 			}
 		}
 		remains.trim();
+		headA = remains.head->next;
+		headB = b.head->next;
 	}
-	if (getremains)
+	if (getRemains)
 		return remains;
 	return result;
 }
+
 Poly Poly::operator/(const Poly &b) const
 {
 	return division(b, false);
 }
+
 Poly Poly::operator%(const Poly &b) const
 {
 	return division(b, true);
 }
+
 Poly Poly::GCD(const Poly &b) const
 {
 	Poly copyB = b, remains = (*this) % b;
@@ -305,9 +303,10 @@ Poly Poly::GCD(const Poly &b) const
 	else
 		return copyB.GCD(remains);
 }
+
 Poly Poly::LCM(const Poly &b) const
 {
-	auto result = (*this) * (b / GCD(b));
+	Poly result = (*this) * (b / GCD(b));
 	result.normalize();
 	return result;
 }
@@ -324,21 +323,22 @@ std::ostream &operator<<(std::ostream &stream, const Poly &poly)
 		stream << "0.0000" << std::endl;
 		return stream;
 	}
-	auto scanptr = poly.head->next;
-	for (bool first = false; scanptr; scanptr = scanptr->next)
+
+	bool isFirst = false;
+	for (auto scanPos = poly.head->next; scanPos; scanPos = scanPos->next)
 	{
-		if (first == false)
-			first = true;
-		else if (scanptr->data.coef > 0)
+		if (isFirst == false)
+			isFirst = true;
+		else if (scanPos->data.coef > 0)
 			stream << "+";
-		if (scanptr->data.coef < 0)
+		if (scanPos->data.coef < 0)
 			stream << "-";
-		stream << std::setprecision(4) << std::fixed << fabs(scanptr->data.coef);
-		if (scanptr->data.expn)
+		stream << std::setprecision(4) << std::fixed << fabs(scanPos->data.coef);
+		if (scanPos->data.expn)
 		{
 			stream << "x";
-			if (scanptr->data.expn != 1)
-				stream << "^" << scanptr->data.expn;
+			if (scanPos->data.expn != 1)
+				stream << "^" << scanPos->data.expn;
 		}
 	}
 	stream << std::endl;
@@ -354,7 +354,7 @@ std::istream &operator>>(std::istream &stream, Poly &poly)
 		stream >> addTerm.coef >> addTerm.expn;
 		if (!addTerm.coef && !addTerm.expn)
 			break;
-		poly.addnode(addTerm);
+		poly.addNode(addTerm);
 	}
 	poly.trim();
 	return stream;

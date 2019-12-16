@@ -1,3 +1,8 @@
+/*
+ * Author: MHY-Silence
+ * Date: 2019-12-1
+ * Content: Test program of experiment 1
+ */ 
 #define _CRT_SECURE_NO_WARNINGS
 #include <string>
 #include <cstdlib>

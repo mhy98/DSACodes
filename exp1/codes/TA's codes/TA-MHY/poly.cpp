@@ -1,3 +1,8 @@
+/*
+ * Author: MHY-Silence
+ * Date: 2019-12-1
+ * Content: Expected solution of experiment 1
+ */ 
 #include <cmath>
 #include <cstdlib>
 #include <iomanip>
@@ -50,7 +55,7 @@ public:
 		delete head;
 		head = NULL;
 	}
-	void addnode(Elemtype elem)
+	void addNode(Elemtype elem)
 	{
 		auto tail = head;
 		while (tail->next)
@@ -75,7 +80,7 @@ public:
 			return;
 		clear();
 		for (auto ptrB = b.head->next; ptrB; ptrB = ptrB->next)
-			addnode(ptrB->data);
+			addNode(ptrB->data);
 	}
 	void normalize();
 	double evaluate(double x) const;
@@ -184,7 +189,7 @@ Poly Poly::operator--(void) const
 Poly Poly::operator^(int x) const
 {
 	Poly result, base = *(this);
-	result.addnode(Term(1, 0));
+	result.addNode(Term(1, 0));
 	while (x > 0)
 	{
 		if (x & 1)
@@ -202,7 +207,7 @@ Poly Poly::operator=(const Poly &b)
 
 	clear();
 	for (auto ptrB = b.head->next; ptrB; ptrB = ptrB->next)
-		addnode(ptrB->data);
+		addNode(ptrB->data);
 	return *this;
 }
 
@@ -210,7 +215,7 @@ Poly Poly::operator+(const Poly &b) const
 {
 	Poly result = *this;
 	for(auto ptrB = b.head->next;ptrB; ptrB = ptrB->next)
-		result.addnode(ptrB->data);
+		result.addNode(ptrB->data);
 	result.trim();
 	return result;
 }
@@ -228,7 +233,7 @@ Poly Poly::operator*(const Poly &b) const
 	Poly result;
 	for (auto ptrA = head->next; ptrA; ptrA = ptrA->next)
 		for (auto ptrB = b.head->next; ptrB; ptrB = ptrB->next)
-			result.addnode(Term(ptrA->data.coef * ptrB->data.coef, ptrA->data.expn + ptrB->data.expn));
+			result.addNode(Term(ptrA->data.coef * ptrB->data.coef, ptrA->data.expn + ptrB->data.expn));
 	result.trim();
 	return result;
 }
@@ -242,7 +247,7 @@ Poly Poly::division(const Poly &b, bool getRemains) const
 	{
 		// Add the term to the result
 		Term term_result(headA->data.coef / headB->data.coef, headA->data.expn - headB->data.expn);
-		result.addnode(term_result);
+		result.addNode(term_result);
 
 		// Delete data From iterA, iterB
 		for (auto iterA = headA, iterB = headB; iterB; iterB = iterB->next)
@@ -349,7 +354,7 @@ std::istream &operator>>(std::istream &stream, Poly &poly)
 		stream >> addTerm.coef >> addTerm.expn;
 		if (!addTerm.coef && !addTerm.expn)
 			break;
-		poly.addnode(addTerm);
+		poly.addNode(addTerm);
 	}
 	poly.trim();
 	return stream;

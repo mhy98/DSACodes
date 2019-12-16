@@ -9,7 +9,6 @@
 #include <stdlib.h>
 
 const int MAX_SIZE = 1510;
-const int MAX_INFECT = 1510;
 
 class Graph
 {
@@ -31,15 +30,13 @@ public:
 class MisakaNetwork : public Graph
 {
 private:
-	int infect_num;
-
 	bool isInfectSrc[MAX_SIZE];
 	int infectTimes[MAX_SIZE], infectedBy[MAX_SIZE];
 
-	void DFS(int infectSrc, int startNode, bool* visited)
+	void DFS(int infectSrc, int thisNode, bool* visited)
 	{
 		for (int i = 0; i < nodeNum; i++)
-			if (graph[startNode][i] && !visited[i] && i != startNode)
+			if (graph[thisNode][i] && !visited[i] && i != thisNode)
 			{
 				// if the node is infected by many nodes, DFS is unnecessary.
 				if (infectTimes[i] > 1||isInfectSrc[i])
@@ -62,10 +59,11 @@ public:
 	void input()
 	{
 		Graph::input();
-		scanf("%d", &infect_num);
-		int tmp;
-		for (int i = 0; i < infect_num; i++)
+		int infectNum;
+		scanf("%d", &infectNum);
+		for (int i = 0; i < infectNum; i++)
 		{
+			int tmp;
 			scanf("%d", &tmp);
 			isInfectSrc[tmp] = true;
 		}

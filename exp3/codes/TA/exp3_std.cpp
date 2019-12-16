@@ -45,7 +45,7 @@ public:
 	}
 };
 
-node* Construct(char* inputStr, int &scanPos)
+node* construct(char* inputStr, int &scanPos)
 {
 	// inputStr[scanPos] is '{'
 	scanPos++;	//skip the '{'
@@ -57,7 +57,7 @@ node* Construct(char* inputStr, int &scanPos)
 	auto subTree = new node;
 
 	// lchild
-	subTree->lchild = Construct(inputStr, scanPos);
+	subTree->lchild = construct(inputStr, scanPos);
 	scanPos++;	//skip the comma
 	
 	// number
@@ -67,19 +67,19 @@ node* Construct(char* inputStr, int &scanPos)
 	scanPos++;	//skip the comma
 
 	//rchild
-	subTree->rchild = Construct(inputStr, scanPos);
+	subTree->rchild = construct(inputStr, scanPos);
 	return subTree;
 }
 
-void PreOrder(bool comma, node* root)
+void preOrder(bool comma, node* root)
 {
 	if (!root)
 		return;
 	if(comma)
 		printf(",");
 	printf("%d", root->data);
-	PreOrder(true, root->lchild);
-	PreOrder(true, root->rchild);
+	preOrder(true, root->lchild);
+	preOrder(true, root->rchild);
 }
 
 queue<node*> layer[2];
@@ -117,9 +117,9 @@ int main()
 	scanf("%s", inputStr);
 	
 	int scanPos = 0;
-	node *biTree = Construct(inputStr, scanPos);
+	node *biTree = construct(inputStr, scanPos);
 	
-	PreOrder(false, biTree);
+	preOrder(false, biTree);
 	printf("\n");
 
 	int maxWidth, maxWidthDepth, depth;
