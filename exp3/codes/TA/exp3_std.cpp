@@ -1,3 +1,9 @@
+/*
+ * Author: MHY-Silence
+ * Date: 2019-12-16
+ * Content: Expected solution of experiment 3
+ */
+
 #define _CRT_SECURE_NO_WARNINGS
 #include <cstdio>
 #include <cctype>
