@@ -1,0 +1,17 @@
+{
+    "files.associations": {
+        "cstdlib": "cpp",
+        "array": "cpp",
+        "*.tcc": "cpp",
+        "deque": "cpp",
+        "list": "cpp",
+        "string": "cpp",
+        "vector": "cpp",
+        "memory_resource": "cpp",
+        "string_view": "cpp",
+        "functional": "cpp",
+        "memory": "cpp",
+        "future": "cpp",
+        "tuple": "cpp"
+    }
+}
