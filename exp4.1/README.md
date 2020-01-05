@@ -1,5 +1,6 @@
 # Experiment 4.1
 
+题解作者：MHY
 本题由[leetcode#928](https://leetcode-cn.com/problems/minimize-malware-spread-ii/ "leetcode真是个好东西！")改编而来。
 
 ### 实验目的
