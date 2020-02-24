@@ -1,2 +1,7 @@
-.vscode 
-.vs
+.vscode/
+*/.vscode/ 
+.vs/
+*/.vs/
+.idea/
+*/.idea/
+*/.settings/
