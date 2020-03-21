@@ -50,7 +50,7 @@
     <img src="readme-pics/Shokuhou-2.jpg"/>
 </div>
 
-<p align="center" style='font-size:12px;color:gray'>我们的食蜂同学遇到的是本题的一个特例——只有一个病毒源。</p>
+<p align="center" style='font-size:12px;color:gray'>我们的食蜂同学遇到的是本题的一个特例——只有一个病毒源。如果暗部组织“人员”能再给点力，多感染几个，食蜂同学可能就会利用本题的算法来合理分配人手了。</p>
 
 
 某日，四个~~被食蜂同学控制了的~~助教正在开会讨论图论部分应该出什么题。助教们翻了科大编的教材、严蔚敏书和大黑皮《算法导论》，却一直找不到合适的题。
